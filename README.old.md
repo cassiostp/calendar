@@ -1,2 +1,0 @@
-# calendar
-Small calendar app

@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import logo from 'static/logo.svg';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
         </p>
         <a
           className="App-link"
-          href="https://reactjs.org"
+          href="https://twitch.tv/ninten"
           target="_blank"
           rel="noopener noreferrer"
         >
