@@ -1,0 +1,38 @@
+.calendar-table {
+    border-collapse: collapse;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #898989;
+
+    td {
+        font-size: 0.875em;
+        font-weight: bold;
+        min-width: 40px;
+        vertical-align: text-top;
+        border: 1px solid #898989;
+
+        &.weekend {
+            background-color: #f2f2f2;
+            color: #3a719e;
+        }
+
+        &.disabled {
+            color: #ababab;
+        }
+
+        > div {
+            width: 100%;
+            height: 10%;
+            background-color: yellowgreen;
+        }
+    }
+
+    > .calendar-header {
+        th {
+            font-size: 0.9375em;
+            font-weight: 500;
+            color: white;
+            background-color: #2f74b5;
+        }
+    }
+}
