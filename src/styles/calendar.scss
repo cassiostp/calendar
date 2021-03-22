@@ -51,6 +51,10 @@
                     color: $color-weekend;
                 }
 
+                &.today {
+                    background-color: $color-today;
+                }
+
                 &.disabled {
                     color: $color-disabled;
                 }

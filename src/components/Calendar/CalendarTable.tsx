@@ -1,21 +1,17 @@
 import React from 'react';
 
-import MonthSelector from 'components/Calendar/MonthSelector';
-import CalendarHeader from 'components/Calendar/CalendarHeader';
+import Header from 'components/Calendar/Header';
 import Reminder from 'components/Reminder/Reminder';
 
 function CalendarTable() {
     return (
         <div className='calendar-container'>
-            <div className='calendar-header-container'>
-                <MonthSelector />
-                <CalendarHeader />
-            </div>
+            <Header />
             <div className='calendar-table-container'>
 
                 <div className='calendar-table'>
                     <div className='weekend'>1<Reminder /><Reminder /><Reminder /><Reminder /><Reminder /></div>
-                    <div>2</div>
+                    <div className='today'>2</div>
                     <div>3</div>
                     <div>4</div>
                     <div>5</div>
