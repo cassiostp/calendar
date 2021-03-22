@@ -1,10 +1,15 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
-function Reminder() {
+interface Props {
+    title?: string; 
+    onClick?: () => void;
+}
+
+function Reminder({ title, onClick }: Props) {
     return (
-        <Button size='sm' variant='success'>
-                <span>Easter Sunday</span>
+        <Button onClick={onClick} size='sm' variant='success'>
+                <span>{title}</span>
         </Button>
     );
 }

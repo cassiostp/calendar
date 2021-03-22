@@ -1,15 +1,16 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import { DateTime } from 'luxon';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
     decrement,
     increment,
     selectCurrentDate,
 } from 'components/Calendar/calendarSlice';
-import { useDispatch, useSelector } from 'react-redux';
 
 function CalendarHeader() {
-    const date = useSelector(selectCurrentDate);
+    const date = DateTime.fromMillis(useSelector(selectCurrentDate));
     const dispatch = useDispatch();
 
     return (

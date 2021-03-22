@@ -1,67 +1,25 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
+import {
+    selectCalendarDays,
+} from 'components/Calendar/calendarSlice';
 import Header from 'components/Calendar/Header';
-import Reminder from 'components/Reminder/Reminder';
+import Cell from 'components/Calendar/Cell';
 
 function CalendarTable() {
+    const days = useSelector(selectCalendarDays);
     return (
         <div className='calendar-container'>
             <Header />
             <div className='calendar-table-container'>
-
                 <div className='calendar-table'>
-                    <div className='weekend'>1<Reminder /><Reminder /><Reminder /><Reminder /><Reminder /></div>
-                    <div className='today'>2</div>
-                    <div>3</div>
-                    <div>4</div>
-                    <div>5</div>
-                    <div>6</div>
-                    <div className='weekend'>7</div>
-
-                    <div className='weekend'>1</div>
-                    <div>2</div>
-                    <div>3</div>
-                    <div>4</div>
-                    <div>5</div>
-                    <div>6</div>
-                    <div className='weekend'>7</div>
-
-
-                    <div className='weekend'>1</div>
-                    <div>2</div>
-                    <div>3</div>
-                    <div>4</div>
-                    <div>5</div>
-                    <div>6</div>
-                    <div className='weekend'>7</div>
-
-
-                    <div className='weekend'>1</div>
-                    <div>2</div>
-                    <div>3</div>
-                    <div>4</div>
-                    <div>5</div>
-                    <div>6</div>
-                    <div className='weekend'>7</div>
-
-
-                    <div className='weekend'>1</div>
-                    <div>2</div>
-                    <div>3</div>
-                    <div>4</div>
-                    <div>5</div>
-                    <div>6</div>
-                    <div className='weekend'>7</div>
-
-                    <div className='weekend'>1</div>
-                    <div>2</div>
-                    <div>3</div>
-                    <div>4</div>
-                    <div>5</div>
-                    <div className='disabled'>6</div>
-                    <div className='weekend disabled'>7</div>
+                    {days.map(day => (
+                        <Cell date={day} />
+                    ))}
                 </div>
             </div>
+
         </div>
     );
 }
