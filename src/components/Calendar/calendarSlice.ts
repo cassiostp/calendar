@@ -1,19 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppThunk, RootState } from 'store';
 import { DateTime } from 'luxon';
+
+import { AppThunk, RootState } from 'store';
+import { Reminder } from 'types';
 
 const DAYS_IN_CALENDAR = 42;
 
 interface Reminders {
-    [key: string]: [
-        {
-            title: string,
-            text: string,
-            date: number,
-            city: string,
-            color: string,
-        }
-    ]
+    [key: string]: Reminder[] | undefined;
 }
 
 interface CalendarState {
@@ -24,13 +18,20 @@ interface CalendarState {
 const initialState: CalendarState = {
     date: DateTime.now().toMillis(),
     reminders: {
-        'year-month-day': [
+        '2021-3-22': [
             {
-                title: 'test',
-                text: 'test text',
-                date: 123400000,
+                title: 'Test Reminder',
+                text: 'This is a initial reminder set for tests',
+                date: DateTime.now().toMillis(),
                 city: 'fortaleza',
                 color: 'green',
+            },
+            {
+                title: 'Test Reminder 2',
+                text: 'This is a initial reminder set for tests 2',
+                date: DateTime.now().minus({ hours: 1 }).toMillis(),
+                city: 'aracaju',
+                color: 'yellow',
             }
         ]
     },
@@ -58,17 +59,19 @@ export const selectCalendarDays = (state: RootState) => {
     const firstDay = currentDate.set({ day: 1 });
     const firstWeekday = firstDay.weekday % 7;
     const previousFirstDay = firstDay.minus({ days: firstWeekday });
-    
-    for(let index = 0; index < DAYS_IN_CALENDAR; index++) {
+
+    for (let index = 0; index < DAYS_IN_CALENDAR; index++) {
         calendarArray.push(previousFirstDay.plus({ days: index }).toMillis())
     }
 
     return calendarArray;
 };
 export const selectRemindersByDate = (date: DateTime) => (state: RootState) => {
-    console.log(date.year, date.month, date.day);
     const reminders = state.calendar.reminders[`${date.year}-${date.month}-${date.day}`];
-    return reminders ?? [];
+    const sortedReminders = reminders?.sort((a, b) =>
+        DateTime.fromMillis(a.date).diff(DateTime.fromMillis(b.date)).milliseconds
+    );
+    return sortedReminders ?? [];
 }
 
 export default calendarSlice.reducer;

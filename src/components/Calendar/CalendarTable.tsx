@@ -15,7 +15,7 @@ function CalendarTable() {
             <div className='calendar-table-container'>
                 <div className='calendar-table'>
                     {days.map(day => (
-                        <Cell date={day} />
+                        <Cell key={day} date={day} />
                     ))}
                 </div>
             </div>

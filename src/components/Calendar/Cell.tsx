@@ -6,6 +6,7 @@ import {
     selectCurrentDate,
     selectRemindersByDate,
 } from 'components/Calendar/calendarSlice';
+import Reminder from 'components/Reminder/Reminder';
 
 interface Props {
     date: number;
@@ -34,10 +35,15 @@ function CalendarCell({ date }: Props) {
     const cellDate = DateTime.fromMillis(date);
     const reminders = useSelector(selectRemindersByDate(cellDate));
 
-    console.log(reminders);
     return (
         <div className={getClassNames(cellDate, currentDate)}>
             {cellDate.day}
+            {reminders.map(reminder => (
+                <Reminder
+                    key={reminder.date}
+                    reminder={reminder}
+                />
+            ))}
         </div>
     );
 }
