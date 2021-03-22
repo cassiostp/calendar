@@ -1,67 +1,72 @@
 import React from 'react';
+
+import MonthSelector from 'components/Calendar/MonthSelector';
 import CalendarHeader from 'components/Calendar/CalendarHeader';
+import Reminder from 'components/Reminder/Reminder';
 
 function CalendarTable() {
     return (
-        <table className='calendar-table'>
-            <CalendarHeader />
-            <tbody>
-                <tr>
-                    <td className='weekend'>1<div></div></td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td className='weekend'>7</td>
-                </tr>
-                <tr>
-                    <td className='weekend'>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td className='weekend'>7</td>
-                </tr>
-                <tr>
-                    <td className='weekend'>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td className='weekend'>7</td>
-                </tr>
-                <tr>
-                    <td className='weekend'>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td className='weekend'>7</td>
-                </tr>
-                <tr>
-                    <td className='weekend'>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td className='weekend'>7</td>
-                </tr>
-                <tr>
-                    <td className='weekend'>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td className='weekend'>7</td>
-                </tr>
-            </tbody>
-        </table>
+        <div className='calendar-container'>
+            <div className='calendar-header-container'>
+                <MonthSelector />
+                <CalendarHeader />
+            </div>
+            <div className='calendar-table-container'>
+
+                <div className='calendar-table'>
+                    <div className='weekend'>1<Reminder /><Reminder /><Reminder /><Reminder /><Reminder /></div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div>6</div>
+                    <div className='weekend'>7</div>
+
+                    <div className='weekend'>1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div>6</div>
+                    <div className='weekend'>7</div>
+
+
+                    <div className='weekend'>1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div>6</div>
+                    <div className='weekend'>7</div>
+
+
+                    <div className='weekend'>1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div>6</div>
+                    <div className='weekend'>7</div>
+
+
+                    <div className='weekend'>1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div>6</div>
+                    <div className='weekend'>7</div>
+
+                    <div className='weekend'>1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div className='disabled'>6</div>
+                    <div className='weekend disabled'>7</div>
+                </div>
+            </div>
+        </div>
     );
 }
 

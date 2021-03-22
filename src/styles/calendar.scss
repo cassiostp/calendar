@@ -1,38 +1,79 @@
-.calendar-table {
-    border-collapse: collapse;
-    width: 100%;
+.calendar-container {
     height: 100%;
-    border: 1px solid #898989;
+    display: flex;
+    flex-direction: column;
+    min-width: 280px;
 
-    td {
-        font-size: 0.875em;
-        font-weight: bold;
-        min-width: 40px;
-        vertical-align: text-top;
-        border: 1px solid #898989;
-
-        &.weekend {
-            background-color: #f2f2f2;
-            color: #3a719e;
+    .calendar-header-container {
+        .month-selector {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding-bottom: 12px;
         }
 
-        &.disabled {
-            color: #ababab;
-        }
+        .calendar-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background-color: $color-primary;
 
-        > div {
-            width: 100%;
-            height: 10%;
-            background-color: yellowgreen;
+            span {
+                font-size: 0.9375em;
+                font-weight: 500;
+                color: white;
+                text-align: center;
+            }
         }
     }
 
-    > .calendar-header {
-        th {
-            font-size: 0.9375em;
-            font-weight: 500;
-            color: white;
-            background-color: #2f74b5;
+    .calendar-table-container {
+        flex: 1;
+
+        .calendar-table {
+            display: grid;
+            height: 100%;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            border-top: 1px solid $color-border;
+            border-right: 1px solid $color-border;
+
+            > div {
+                overflow: hidden;
+                font-size: 0.875em;
+                font-weight: bold;
+                vertical-align: text-top;
+                border-left: 1px solid $color-border;
+                border-bottom: 1px solid $color-border;
+                padding-right: 6px;
+
+                &.weekend {
+                    background-color: $color-weekend-background;
+                    color: $color-weekend;
+                }
+
+                &.disabled {
+                    color: $color-disabled;
+                }
+
+                > .btn {
+                    display: flex;
+                    overflow: hidden;
+                    width: 100%;
+                    background-color: $color-reminder;
+                    border-color: $color-reminder;
+                    box-shadow: unset;
+                    padding: 1px 6px;
+                    margin-top: 1px;
+                    text-align: left;
+                    font-size: 0.875em;
+                    font-weight: 500;
+                    
+                    > span {
+                        overflow: hidden;
+                        white-space: nowrap;
+                    }
+                }
+            }
         }
     }
 }
