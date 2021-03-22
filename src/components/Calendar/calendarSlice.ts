@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DateTime } from 'luxon';
+import sortBy from 'lodash/sortBy';
 
 import { AppThunk, RootState } from 'store';
 import { Reminder } from 'types';
@@ -68,9 +69,7 @@ export const selectCalendarDays = (state: RootState) => {
 };
 export const selectRemindersByDate = (date: DateTime) => (state: RootState) => {
     const reminders = state.calendar.reminders[`${date.year}-${date.month}-${date.day}`];
-    const sortedReminders = reminders?.sort((a, b) =>
-        DateTime.fromMillis(a.date).diff(DateTime.fromMillis(b.date)).milliseconds
-    );
+    const sortedReminders = sortBy(reminders, ['date']);
     return sortedReminders ?? [];
 }
 
