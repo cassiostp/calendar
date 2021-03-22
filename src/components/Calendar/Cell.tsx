@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DateTime } from 'luxon';
 
 import {
@@ -7,6 +7,7 @@ import {
     selectRemindersByDate,
 } from 'components/Calendar/calendarSlice';
 import Reminder from 'components/Reminder/Reminder';
+import { showModal } from 'components/Reminder/reminderSlice';
 
 interface Props {
     date: number;
@@ -31,12 +32,19 @@ function getClassNames(cellDate: DateTime, currentDate: DateTime) {
 }
 
 function CalendarCell({ date }: Props) {
+    const dispatch = useDispatch();
     const currentDate = DateTime.fromMillis(useSelector(selectCurrentDate));
     const cellDate = DateTime.fromMillis(date);
     const reminders = useSelector(selectRemindersByDate(cellDate));
 
     return (
-        <div className={getClassNames(cellDate, currentDate)}>
+        <div
+            className={getClassNames(cellDate, currentDate)}
+            onClick={(event) => {
+                event.stopPropagation();
+                dispatch(showModal({ type: 'new' }))
+            }}
+        >
             {cellDate.day}
             {reminders.map(reminder => (
                 <Reminder

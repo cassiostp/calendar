@@ -22,17 +22,15 @@ const initialState: CalendarState = {
         '2021-3-22': [
             {
                 title: 'Test Reminder',
-                text: 'This is a initial reminder set for tests',
                 date: DateTime.now().toMillis(),
                 city: 'fortaleza',
-                color: 'green',
+                color: '',
             },
             {
                 title: 'Test Reminder 2',
-                text: 'This is a initial reminder set for tests 2',
                 date: DateTime.now().minus({ hours: 1 }).toMillis(),
                 city: 'aracaju',
-                color: 'yellow',
+                color: '',
             }
         ]
     },

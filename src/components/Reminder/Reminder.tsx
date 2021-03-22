@@ -13,9 +13,16 @@ function Reminder({ reminder }: Props) {
     const dispatch = useDispatch();
     return (
         <Button
-            onClick={() => dispatch(showModal({ type: 'view', reminder }))}
+            onClick={(event) => {
+                event.stopPropagation();
+                dispatch(showModal({ type: 'view',  reminder }));
+            }}
             size='sm'
             variant='success'
+            style={{
+                backgroundColor: reminder.color,
+                borderColor: reminder.color,
+            }}
         >
             <span>{reminder.title}</span>
         </Button>
