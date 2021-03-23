@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
     hideModal,
+    getWeatherInfo,
     showModal,
     setCity,
     setColor,
@@ -32,7 +33,6 @@ function ReminderModal() {
     } = useSelector(selectModalState);
     const modifiedReminder = useSelector(selectReminderFromForm);
     const dispatch = useDispatch();
-
     let modalFooter: React.ReactNode;
 
     if (type === 'view') {
@@ -80,9 +80,8 @@ function ReminderModal() {
     return (
         <Modal
             show={show}
-            onHide={() => {
-                dispatch(hideModal());
-            }}
+            onShow={() => type === 'view' && dispatch(getWeatherInfo(formCity))}
+            onHide={() => dispatch(hideModal())}
         >
             <Modal.Header closeButton>
                 <h4>{type === 'view' ? 'Reminder' : 'New/Edit'}</h4>
@@ -98,14 +97,17 @@ function ReminderModal() {
                         value={formTitle}
                         readOnly={type === 'view'}
                     />
-                    <input
-                        type="text"
-                        id='city'
-                        placeholder='Add a city'
-                        onChange={(event) => dispatch(setCity({ city: event.target.value }))}
-                        value={formCity}
-                        readOnly={type === 'view'}
-                    />
+                    <div>
+                        <span>City: </span>
+                        <input
+                            type="text"
+                            id='city'
+                            placeholder='Add a city'
+                            onChange={(event) => dispatch(setCity({ city: event.target.value }))}
+                            value={formCity}
+                            readOnly={type === 'view'}
+                        />
+                    </div>
                     <div>
                         <span>Pick a time: </span>
                         <input

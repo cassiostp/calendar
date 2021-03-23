@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DateTime } from 'luxon';
 import sortBy from 'lodash/sortBy';
 
-import { AppThunk, RootState } from 'store';
+import { RootState } from 'store';
 import { Reminder } from 'types';
 
 const DAYS_IN_CALENDAR = 42;

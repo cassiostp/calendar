@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DateTime } from 'luxon';
 
-import { RootState } from 'store';
+import { AppThunk, RootState } from 'store';
 import { Reminder } from 'types';
+import { key } from 'api.json';
 
 type modalType = 'view' | 'edit' | 'new';
 
@@ -17,6 +18,7 @@ interface ReminderState {
         formColor: string;
         selectedReminder?: Reminder;
     };
+    weatherInfo?: object;
 }
 
 const initialState: ReminderState = {
@@ -39,7 +41,8 @@ export const reminderSlice = createSlice({
             state,
             action: PayloadAction<{ type: modalType, reminder?: Reminder }>
         ) => {
-            const { reminder } = action.payload;
+            const { reminder, type } = action.payload;
+            
             if (reminder) {
                 state.modal.selectedReminder = reminder;
                 state.modal.formTitle = reminder.title;
@@ -51,7 +54,7 @@ export const reminderSlice = createSlice({
             state.modal = {
                 ...state.modal,
                 show: true,
-                type: action.payload.type,
+                type: type,
             }
         },
         hideModal: state => {
@@ -76,7 +79,12 @@ export const reminderSlice = createSlice({
             const { dateMillis } = action.payload;
             state.modal.formDate = DateTime.fromMillis(dateMillis).toFormat('yyyy-MM-dd');
             state.modal.formTime = DateTime.fromMillis(dateMillis).toFormat('hh:mm');
-        }
+        },
+        setWeather: (state, action: PayloadAction<{ weatherInfo: object }>) => {
+            console.log('calling setWeather action');
+            // TODO: figure out why api is rejected
+            state.weatherInfo = action.payload.weatherInfo;
+        },
     }
 });
 
@@ -89,7 +97,21 @@ export const {
     setTime,
     setDateTime,
     setTitle,
+    setWeather,
 } = reminderSlice.actions;
+
+export const getWeatherInfo = (city: string): AppThunk => dispatch => {
+    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`).then(
+        response => response.json().then(
+            value => {
+                console.log(value);
+                dispatch(setWeather({ weatherInfo: value }));
+            }
+        ).catch(e => {
+            console.log('something went wrong with the request');
+        })
+    )
+};
 
 export const selectModalState = (state: RootState) => state.reminder.modal;
 export const selectReminderFromForm = (state: RootState): Reminder => {
