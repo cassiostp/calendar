@@ -1,0 +1,83 @@
+.calendar-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: 280px;
+
+    .calendar-header-container {
+        .month-selector {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding-bottom: 12px;
+        }
+
+        .calendar-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background-color: $color-primary;
+
+            span {
+                font-size: 0.9375em;
+                font-weight: 500;
+                color: white;
+                text-align: center;
+            }
+        }
+    }
+
+    .calendar-table-container {
+        flex: 1;
+
+        .calendar-table {
+            display: grid;
+            height: 100%;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            border-top: 1px solid $color-border;
+            border-right: 1px solid $color-border;
+
+            > div {
+                overflow: hidden;
+                font-size: 0.875em;
+                font-weight: bold;
+                vertical-align: text-top;
+                border-left: 1px solid $color-border;
+                border-bottom: 1px solid $color-border;
+                padding-right: 6px;
+
+                &.weekend {
+                    background-color: $color-weekend-background;
+                    color: $color-weekend;
+                }
+
+                &.today {
+                    background-color: $color-today;
+                }
+
+                &.disabled {
+                    color: $color-disabled;
+                }
+
+                > .btn {
+                    display: flex;
+                    overflow: hidden;
+                    width: 100%;
+                    background-color: $color-reminder;
+                    border-color: $color-reminder;
+                    box-shadow: unset;
+                    padding: 1px 6px;
+                    margin-top: 1px;
+                    text-align: left;
+                    font-size: 0.875em;
+                    font-weight: 500;
+                    
+                    > span {
+                        overflow: hidden;
+                        white-space: nowrap;
+                    }
+                }
+            }
+        }
+    }
+}

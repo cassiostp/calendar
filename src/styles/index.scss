@@ -1,15 +1,18 @@
-@import 'App.scss';
+@import "colors.scss";
+@import "calendar.scss";
+@import "modal.scss";
+@import "app.scss";
+
+html,
+body,
+#root,
+#root > div {
+  height: 100%;
+}
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", "sans-serif";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
