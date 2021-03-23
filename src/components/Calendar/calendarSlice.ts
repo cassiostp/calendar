@@ -7,33 +7,14 @@ import { Reminder } from 'types';
 
 const DAYS_IN_CALENDAR = 42;
 
-interface Reminders {
-    [key: string]: Reminder[] | undefined;
-}
-
 interface CalendarState {
     date: number;
-    reminders: Reminders;
+    reminders: Reminder[];
 }
 
 const initialState: CalendarState = {
     date: DateTime.now().toMillis(),
-    reminders: {
-        '2021-3-22': [
-            {
-                title: 'Test Reminder',
-                date: DateTime.now().toMillis(),
-                city: 'fortaleza',
-                color: '',
-            },
-            {
-                title: 'Test Reminder 2',
-                date: DateTime.now().minus({ hours: 1 }).toMillis(),
-                city: 'aracaju',
-                color: '',
-            }
-        ]
-    },
+    reminders: [],
 }
 
 export const calendarSlice = createSlice({
@@ -45,11 +26,42 @@ export const calendarSlice = createSlice({
         },
         decrement: state => {
             state.date = DateTime.fromMillis(state.date).minus({ months: 1 }).toMillis();
+        },
+        saveReminder: (
+            state,
+            action: PayloadAction<{ newReminder: Reminder, oldReminder?: Reminder }>
+        ) => {
+            const { newReminder, oldReminder } = action.payload;
+            let { reminders } = state;
+            const index = reminders.findIndex(reminder => reminder.date === newReminder.date);
+            if (oldReminder) {
+                reminders = reminders.filter(
+                    filterReminder => filterReminder.date !== oldReminder.date
+                );
+
+            }
+            if (index >= 0) {
+                reminders[index] = newReminder;
+            } else {
+                reminders.push(newReminder);
+            }
+            state.reminders = reminders;
+        },
+        deleteReminder: (state, action: PayloadAction<{ reminder: Reminder }>) => {
+            const { reminder } = action.payload;
+            state.reminders = state.reminders.filter(
+                filterReminder => filterReminder.date !== reminder.date
+            );
         }
     }
 });
 
-export const { increment, decrement } = calendarSlice.actions;
+export const {
+    increment,
+    decrement,
+    saveReminder,
+    deleteReminder
+} = calendarSlice.actions;
 
 export const selectCurrentDate = (state: RootState) => state.calendar.date;
 export const selectCalendarDays = (state: RootState) => {
@@ -66,9 +78,11 @@ export const selectCalendarDays = (state: RootState) => {
     return calendarArray;
 };
 export const selectRemindersByDate = (date: DateTime) => (state: RootState) => {
-    const reminders = state.calendar.reminders[`${date.year}-${date.month}-${date.day}`];
-    const sortedReminders = sortBy(reminders, ['date']);
-    return sortedReminders ?? [];
+    const { reminders } = state.calendar;
+    const filteredReminders = reminders.filter(reminder =>
+        date.toFormat('yyyy-MM-dd') === DateTime.fromMillis(reminder.date).toFormat('yyyy-MM-dd'));
+    const sortedReminders = sortBy(filteredReminders, ['date']);
+    return sortedReminders;
 }
 
 export default calendarSlice.reducer;

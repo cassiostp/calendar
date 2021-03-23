@@ -7,7 +7,7 @@ import {
     selectRemindersByDate,
 } from 'components/Calendar/calendarSlice';
 import Reminder from 'components/Reminder/Reminder';
-import { showModal } from 'components/Reminder/reminderSlice';
+import { showModal, setDateTime } from 'components/Reminder/reminderSlice';
 
 interface Props {
     date: number;
@@ -42,7 +42,8 @@ function CalendarCell({ date }: Props) {
             className={getClassNames(cellDate, currentDate)}
             onClick={(event) => {
                 event.stopPropagation();
-                dispatch(showModal({ type: 'new' }))
+                dispatch(setDateTime({ dateMillis: date }));
+                dispatch(showModal({ type: 'new' }));
             }}
         >
             {cellDate.day}

@@ -10,7 +10,12 @@ interface ReminderState {
     modal: {
         show: boolean;
         type: modalType;
-        selectedReminder: Reminder;
+        formTitle: string;
+        formDate: string;
+        formTime: string;
+        formCity: string;
+        formColor: string;
+        selectedReminder?: Reminder;
     };
 }
 
@@ -18,12 +23,11 @@ const initialState: ReminderState = {
     modal: {
         show: false,
         type: 'view',
-        selectedReminder: {
-            title: '',
-            date: DateTime.now().toMillis(),
-            city: '',
-            color: '',
-        }
+        formTitle: '',
+        formDate: '',
+        formTime: '',
+        formCity: '',
+        formColor: '#0b8043',
     }
 }
 
@@ -35,27 +39,44 @@ export const reminderSlice = createSlice({
             state,
             action: PayloadAction<{ type: modalType, reminder?: Reminder }>
         ) => {
+            const { reminder } = action.payload;
+            if (reminder) {
+                state.modal.selectedReminder = reminder;
+                state.modal.formTitle = reminder.title;
+                state.modal.formColor = reminder.color;
+                state.modal.formCity = reminder.city;
+                state.modal.formDate = DateTime.fromMillis(reminder.date).toFormat('yyyy-MM-dd');
+                state.modal.formTime = DateTime.fromMillis(reminder.date).toFormat('hh:mm');
+            }
             state.modal = {
+                ...state.modal,
                 show: true,
                 type: action.payload.type,
-                selectedReminder: action.payload.reminder ?? initialState.modal.selectedReminder,
             }
         },
         hideModal: state => {
-            state.modal = initialState.modal;
+            state.modal = { ...initialState.modal, type: state.modal.type };
         },
         setTitle: (state, action: PayloadAction<{ title: string }>) => {
-            state.modal.selectedReminder.title =  action.payload.title;
+            state.modal.formTitle = action.payload.title;
         },
-        setDate: (state, action: PayloadAction<{ date: number }>) => {
-            state.modal.selectedReminder.date =  action.payload.date;
+        setDate: (state, action: PayloadAction<{ date: string }>) => {
+            state.modal.formDate = action.payload.date;
+        },
+        setTime: (state, action: PayloadAction<{ time: string }>) => {
+            state.modal.formTime = action.payload.time;
         },
         setColor: (state, action: PayloadAction<{ color: string }>) => {
-            state.modal.selectedReminder.color =  action.payload.color;
+            state.modal.formColor = action.payload.color;
         },
         setCity: (state, action: PayloadAction<{ city: string }>) => {
-            state.modal.selectedReminder.city =  action.payload.city;
+            state.modal.formCity = action.payload.city;
         },
+        setDateTime: (state, action: PayloadAction<{ dateMillis: number }>) => {
+            const { dateMillis } = action.payload;
+            state.modal.formDate = DateTime.fromMillis(dateMillis).toFormat('yyyy-MM-dd');
+            state.modal.formTime = DateTime.fromMillis(dateMillis).toFormat('hh:mm');
+        }
     }
 });
 
@@ -65,9 +86,27 @@ export const {
     setCity,
     setColor,
     setDate,
+    setTime,
+    setDateTime,
     setTitle,
 } = reminderSlice.actions;
 
 export const selectModalState = (state: RootState) => state.reminder.modal;
+export const selectReminderFromForm = (state: RootState): Reminder => {
+    const {
+        formCity,
+        formColor,
+        formDate,
+        formTime,
+        formTitle,
+    } = state.reminder.modal;
+
+    return ({
+        city: formCity,
+        color: formColor,
+        date: DateTime.fromFormat(`${formDate} ${formTime}`, 'yyyy-MM-dd hh:mm').toMillis(),
+        title: formTitle || 'Default reminder',
+    })
+};
 
 export default reminderSlice.reducer;

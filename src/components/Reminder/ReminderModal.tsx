@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { DateTime } from 'luxon';
 
 import {
     hideModal,
@@ -10,45 +9,71 @@ import {
     setCity,
     setColor,
     setDate,
+    setTime,
     setTitle,
     selectModalState,
+    selectReminderFromForm,
 } from 'components/Reminder/reminderSlice';
+import {
+    deleteReminder,
+    saveReminder,
+} from 'components/Calendar/calendarSlice';
 
 function ReminderModal() {
     const {
+        formCity,
+        formColor,
+        formDate,
+        formTime,
+        formTitle,
         selectedReminder,
         show,
         type
     } = useSelector(selectModalState);
+    const modifiedReminder = useSelector(selectReminderFromForm);
     const dispatch = useDispatch();
-    console.log(selectedReminder);
+
+    let modalFooter: React.ReactNode;
 
     if (type === 'view') {
-        return (
-            <Modal
-                show={show}
-                onHide={() => dispatch(hideModal())}
+        modalFooter = (
+            <React.Fragment>
+                <Button
+                    onClick={() => dispatch(showModal({
+                        type: 'edit',
+                        reminder: selectedReminder
+                    }))}
+                >
+                    Edit
+                </Button>
+                <Button
+                    variant='danger'
+                    onClick={() => {
+                        if (selectedReminder) {
+                            dispatch(deleteReminder({
+                                reminder: selectedReminder,
+                            }));
+                            dispatch(hideModal());
+                        }
+                    }}
+                >
+                    Delete
+                </Button>
+            </React.Fragment>
+        );
+    } else {
+        modalFooter = (
+            <Button
+                onClick={() => {
+                    dispatch(saveReminder({
+                        newReminder: modifiedReminder,
+                        oldReminder: selectedReminder,
+                    }));
+                    dispatch(hideModal());
+                }}
             >
-                <Modal.Header closeButton>
-                    <h4>Reminder</h4>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>{selectedReminder.title}</p>
-                    <p>{selectedReminder.city}</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        onClick={() => {
-                            dispatch(showModal({
-                                type: 'edit',
-                                reminder: selectedReminder
-                            }))
-                        }}
-                    >
-                        Edit
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                Save
+            </Button>
         );
     }
 
@@ -60,7 +85,7 @@ function ReminderModal() {
             }}
         >
             <Modal.Header closeButton>
-                <h4>New/Edit</h4>
+                <h4>{type === 'view' ? 'Reminder' : 'New/Edit'}</h4>
             </Modal.Header>
             <Modal.Body>
                 <div className='form-container'>
@@ -70,14 +95,16 @@ function ReminderModal() {
                         maxLength={30}
                         placeholder='Add a title (max 30 chars)'
                         onChange={(event) => dispatch(setTitle({ title: event.target.value }))}
-                        value={selectedReminder.title}
+                        value={formTitle}
+                        readOnly={type === 'view'}
                     />
                     <input
                         type="text"
                         id='city'
                         placeholder='Add a city'
                         onChange={(event) => dispatch(setCity({ city: event.target.value }))}
-                        value={selectedReminder.city}
+                        value={formCity}
+                        readOnly={type === 'view'}
                     />
                     <div>
                         <span>Pick a time: </span>
@@ -85,10 +112,20 @@ function ReminderModal() {
                             type='time'
                             id='time'
                             placeholder='Pick the time'
-                            onChange={(event) => dispatch(setDate({
-                                date: DateTime.fromFormat(event.target.value, 'hh:mm').toMillis()
-                            }))}
-                            value={DateTime.fromMillis(selectedReminder.date).toFormat('hh:mm')}
+                            onChange={(event) => dispatch(setTime({ time: event.target.value }))}
+                            value={formTime}
+                            readOnly={type === 'view'}
+                        />
+                    </div>
+                    <div>
+                        <span>Pick a date: </span>
+                        <input
+                            type='date'
+                            id='date'
+                            placeholder='Pick the date'
+                            onChange={(event) => dispatch(setDate({ date: event.target.value }))}
+                            value={formDate}
+                            readOnly={type === 'view'}
                         />
                     </div>
                     <div>
@@ -96,16 +133,15 @@ function ReminderModal() {
                         <input
                             type='color'
                             onChange={(event) => dispatch(setColor({ color: event.target.value }))}
-                            value={selectedReminder.color}
+                            value={formColor}
+                            disabled={type === 'view'}
                         />
                     </div>
                 </div>
 
             </Modal.Body>
             <Modal.Footer>
-                <Button>
-                    Save
-                </Button>
+                {modalFooter}
             </Modal.Footer>
         </Modal>
     );
